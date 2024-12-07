@@ -1,0 +1,41 @@
+COMPILE_ORDER := hdl/IfElsePkg.vhd
+COMPILE_ORDER += hdl/OsvvmScriptSettingsPkg.vhd
+COMPILE_ORDER += hdl/OsvvmSettingsPkg.vhd
+COMPILE_ORDER += hdl/TextUtilPkg.vhd
+COMPILE_ORDER += hdl/ResolutionPkg.vhd
+COMPILE_ORDER += hdl/NamePkg.vhd
+COMPILE_ORDER += hdl/OsvvmGlobalPkg.vhd
+COMPILE_ORDER += hdl/CoverageVendorApiPkg_default.vhd
+COMPILE_ORDER += hdl/deprecated/LanguageSupport2019Pkg_c.vhd
+COMPILE_ORDER += hdl/TranscriptPkg.vhd
+COMPILE_ORDER += hdl/AlertLogPkg.vhd
+COMPILE_ORDER += hdl/TbUtilPkg.vhd
+COMPILE_ORDER += hdl/NameStorePkg.vhd
+COMPILE_ORDER += hdl/MessageListPkg.vhd
+COMPILE_ORDER += hdl/SortListPkg_int.vhd
+COMPILE_ORDER += hdl/RandomBasePkg.vhd
+COMPILE_ORDER += hdl/OsvvmTypesPkg.vhd
+COMPILE_ORDER += hdl/RandomPkg.vhd
+COMPILE_ORDER += hdl/RandomProcedurePkg.vhd
+COMPILE_ORDER += hdl/CoveragePkg.vhd
+COMPILE_ORDER += hdl/DelayCoveragePkg.vhd
+COMPILE_ORDER += hdl/ClockResetPkg.vhd
+COMPILE_ORDER += hdl/deprecated/ClockResetPkg_2024_05.vhd
+COMPILE_ORDER += hdl/ResizePkg.vhd
+COMPILE_ORDER += hdl/ScoreboardGenericPkg.vhd
+COMPILE_ORDER += hdl/ScoreboardPkg_slv.vhd
+COMPILE_ORDER += hdl/ScoreboardPkg_int.vhd
+COMPILE_ORDER += hdl/ScoreboardPkg_signed.vhd
+COMPILE_ORDER += hdl/ScoreboardPkg_unsigned.vhd
+COMPILE_ORDER += hdl/ScoreboardPkg_IntV.vhd
+COMPILE_ORDER += hdl/MemorySupportPkg.vhd
+COMPILE_ORDER += hdl/deprecated/MemoryGenericPkg_xilinx.vhd
+COMPILE_ORDER += hdl/MemoryPkg.vhd
+COMPILE_ORDER += hdl/ReportPkg.vhd
+COMPILE_ORDER += hdl/OsvvmTypesPkg.vhd
+COMPILE_ORDER += hdl/OsvvmSettingsPkg_default.vhd
+COMPILE_ORDER += hdl/deprecated/RandomPkg2019_c.vhd
+COMPILE_ORDER += hdl/OsvvmContext.vhd
+
+include ../../build/questa.mk
+
