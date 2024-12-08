@@ -2,17 +2,13 @@
 # USER OVERWRITABLE VARS #
 ##########################
 
-COMPILE_ORDER ?= hdl/*
 HAS_TC        ?= no
-VCOM_OPT      ?= -quiet -2008
-VLOG_OPT      ?= -quiet -sv
 
 ####################
 # UNTOUCHABLE VARS #
 ####################
 
-BLOCK := $(notdir $(shell pwd))
-$(BLOCK)_OUTS := sim/*
+BLOCK         ?= $(shell basename $(shell pwd))
 
 ##################
 # GLOBAL TARGETS #
@@ -28,30 +24,10 @@ all sim:
 endif
 
 
-.PHONY: clean compile
+.PHONY: clean
 clean:
 	rm -rf work modelsim.ini sim
 
-compile: comp_$(BLOCK)
-
-##########################
-# BLOCK SPECIFIC TARGETS #
-##########################
-
-.PHONY : comp_$(BLOCK)
-comp_$(BLOCK) : $(BLOCK)_OUTS
-
-.PHONY : $(BLOCK)_OUTS
-$(BLOCK)_OUTS : sim
-
-sim : $(COMPILE_ORDER)
-	@echo "~~ Starting Compiling $(BLOCK)  ~~"
-	vlib -quiet sim
-	vmap -quiet work sim
-	@for i in $(COMPILE_ORDER); do \
-		echo "vcom -work sim $(VCOM_OPT) $$i" ; \
-		vcom $(VCOM_OPT) $$i ; \
-	done
-	@echo "~~ Finishing Compiling $(BLOCK) ~~"
-
+.PHONY: compile
+compile: $($(BLOCK)_OUTS)
 
