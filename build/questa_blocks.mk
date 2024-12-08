@@ -21,10 +21,10 @@ $(BLOCK)_DEPS          := $(patsubst %, ../%/sim, $($(BLOCK)_DEPENDENCY))
 
 .PHONY : comp_%
 comp_$(BLOCK) : $($(BLOCK)_DEPS) $($(BLOCK)_OUTS)
-	@echo "JQZU $@ $^ $%_DEPS"
+	@echo "JQZU $@ $($(BLOCK)_DEPS) $($(BLOCK)_OUTS)"
 
-# $($(BLOCK)_OUTS) : $($(BLOCK)_DEPS) $($(BLOCK)_COMPILE_ORDER)
 $($(BLOCK)_OUTS) : $($(BLOCK)_COMPILE_ORDER)
+	@echo "$($(BLOCK)_OUTS) : $($(BLOCK)_COMPILE_ORDER)"
 	@echo "$(BLOCK)"
 	@echo "~~ Starting Compiling $(BLOCK)  ~~" ; \
 	echo "vlib -quiet $($(BLOCK)_OUTS)" ; \
