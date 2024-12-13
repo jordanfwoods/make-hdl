@@ -14,6 +14,7 @@
 ## CC BY-NC-ND 4.0. To view a copy of this license, visit  ##
 ## https://creativecommons.org/licenses/by-nc-nd/4.0/      ##
 #############################################################
+include ../../make/common.mk
 
 ##########################
 # USER OVERWRITABLE VARS #
@@ -40,15 +41,6 @@ VERBOSE                ?=
 # just give a block name.
 # NOTE: currently looks at _info, but that could be changed in the future, TBD.
 $(BLOCK)_DEPS          := $(patsubst %,../%/sim/_info,$($(BLOCK)_DEPENDENCY))
-
-# Fancy way of toggling verbosity.
-ifeq ($(VERBOSE),)
-V = @
-VECHO = @\#
-else
-V =
-VECHO = @echo
-endif
 
 ######################
 ## GNU MAKE Options ##

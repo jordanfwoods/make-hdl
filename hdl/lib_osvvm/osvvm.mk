@@ -38,5 +38,5 @@ $(BLOCK)_COMPILE_ORDER += ../lib_osvvm/hdl/OsvvmSettingsPkg_default.vhd
 $(BLOCK)_COMPILE_ORDER += ../lib_osvvm/hdl/deprecated/RandomPkg2019_c.vhd
 $(BLOCK)_COMPILE_ORDER += ../lib_osvvm/hdl/OsvvmContext.vhd
 
-include ../../build/questa_blocks.mk
+include ../../make/questa_blocks.mk
 
