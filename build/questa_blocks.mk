@@ -43,9 +43,11 @@ $(BLOCK)_DEPS          := $(patsubst %,../%/sim/_info,$($(BLOCK)_DEPENDENCY))
 
 # Fancy way of toggling verbosity.
 ifeq ($(VERBOSE),)
-V := @
+V = @
+VECHO = @\#
 else
-V :=
+V =
+VECHO = @echo
 endif
 
 ######################
@@ -89,10 +91,12 @@ comp_% : ../%/modelsim.ini ../%/sim/_info ;
 	$Vvmap -quiet work $(libdir)
 	@if [[ $(suffix $(firstword $($*_COMPILE_ORDER))) == @(*.vhdl|*.vho|*.vhd) ]]
 	then
+	$(VECHO) "vcom -work $(libdir) $($*_VCOM_OPT) $($*_COMPILE_ORDER)"
 	$Vvcom -work $(libdir) $($*_VCOM_OPT) $($*_COMPILE_ORDER)
 	else
+	$(VECHO) "vlog -work $(libdir) $($*_VLOG_OPT) $($*_COMPILE_ORDER)"
 	vlog -work $(libdir) $($*_VLOG_OPT) $($*_COMPILE_ORDER)
 	fi
-	@echo "~~ Finishing Compiling $* ~~"
+	$(VECHO) "~~ Finishing Compiling $* ~~"
 	@cd - > /dev/null
 
