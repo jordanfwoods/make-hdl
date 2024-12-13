@@ -30,7 +30,7 @@ clean:
 .PHONY: recursiveclean
 recursiveclean:
 ifdef $(BLOCK)_DEPS
-	rm -rf work modelsim.ini sim $($(BLOCK)_DEPS) $(patsubst %,../%/modelsim.ini, $($(BLOCK)_DEPENDENCY))
+	rm -rf work modelsim.ini sim $(patsubst %,../%/sim, $($(BLOCK)_DEPENDENCY)) $(patsubst %,../%/modelsim.ini, $($(BLOCK)_DEPENDENCY))
 else
 	rm -rf work modelsim.ini sim
 endif
