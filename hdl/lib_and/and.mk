@@ -1,3 +1,5 @@
+include ../lib_osvvm/osvvm.mk
+
 BLOCK := lib_and
 $(BLOCK)_DEPENDENCY := lib_osvvm
 

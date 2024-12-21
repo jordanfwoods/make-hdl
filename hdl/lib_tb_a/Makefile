@@ -1,2 +1,2 @@
-include ../lib_and/and.mk
+include ../lib_tb_a/tb_a.mk
 include ../../make/questa.mk

@@ -1,0 +1,5 @@
+# TODO Make the inclusion recursive
+# TODO Make the clean recursive
+# TODO Test what happens on VCOM/VLOG Error.
+# TODO Remove the LOCAL_COMP funny business / clean up compilation.
+
