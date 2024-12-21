@@ -25,7 +25,7 @@ include ../../make/common.mk
 ##########################
 
 # if unspecified, just grab everything in the hdl folder.
-$(BLOCK)_COMPILE_ORDER ?=
+$(eval $(BLOCK)_COMPILE_ORDER ?= $(wildcard ../$(BLOCK)/hdl/*))
 # names of libraries this block is dependent on.
 $(BLOCK)_DEPENDENCY    ?=
 # If this is a testbench with testcases, allow for 'vsim'
@@ -44,9 +44,9 @@ $(BLOCK)_VLOG_OPT      ?= -quiet -sv
 # Actual output products of dependent libraries. This allows for the user to
 # just give a block name.
 # NOTE: currently looks at _info, but that could be changed in the future, TBD.
-$(BLOCK)_DEPS          := $(patsubst %,../%/sim/_info,$($(BLOCK)_DEPENDENCY))
+$(eval $(BLOCK)_DEPS          := $(patsubst %,../%/sim/_info,$($(BLOCK)_DEPENDENCY)))
 # Dependent Items to clean. Enables Recursive Cleaning.
-$(BLOCK)_CLEAN_DEPS    := $(patsubst %,clean_%,$($(BLOCK)_DEPENDENCY))
+$(eval $(BLOCK)_CLEAN_DEPS    := $(patsubst %,clean_%,$($(BLOCK)_DEPENDENCY)))
 
 ### Concatenated lists for all BLOCKs (So MAKE can find our hypothetical targets easier) ###
 

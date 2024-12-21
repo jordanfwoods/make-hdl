@@ -86,22 +86,16 @@ $(INI_TARGETS) : ../%/modelsim.ini : $$($$*_DEPS)
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 .DELETE_ON_ERROR: ../%/sim/_info # Don't keep _info if it barfs
 $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_ORDER)
-	@set -e;
-	if [ $(firstword $($*_COMPILE_ORDER)) ] ; then
-		LOCAL_COMP="$($*_COMPILE_ORDER)"
-	else
-		LOCAL_COMP="$(wildcard ../$*/hdl/*)"
-	fi
-	$(eval libdir := $(dir $@))
+	@set -e
 	echo "~~ Starting Compiling $*  ~~"
-	cd ../$* ;
-	$(call echo_command, vlib -quiet $(libdir))
-	$(call echo_command, vmap -quiet work $(libdir))
-	if [[ $$(echo $$LOCAL_COMP | awk '{print $$1}') == @(*.vhdl|*.vho|*.vhd) ]]
+	cd ../$*
+	$(call echo_command, vlib -quiet $(dir $@))
+	$(call echo_command, vmap -quiet work $(dir $@))
+	if [[ $$(echo $($*_COMPILE_ORDER) | awk '{print $$1}') == @(*.vhdl|*.vho|*.vhd) ]]
 	then
-	$(call echo_command, vcom -work $(libdir) $($*_VCOM_OPT) $$LOCAL_COMP)
+		$(call echo_command, vcom -work $(dir $@) $($*_VCOM_OPT) $($*_COMPILE_ORDER))
 	else
-	$(call echo_command, vlog -work $(libdir) $($*_VLOG_OPT) $$LOCAL_COMP)
+		$(call echo_command, vlog -work $(dir $@) $($*_VLOG_OPT) $($*_COMPILE_ORDER))
 	fi
 	$(VECHO) "~~ Finishing Compiling $* ~~"
 	cd - > /dev/null

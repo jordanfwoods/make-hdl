@@ -1,13 +1,14 @@
 = TO-DO List
-# TODO Fix the questa_block COMPILE_ORDER DECLARATION.
-# TODO Remove the LOCAL_COMP funny business / clean up compilation.
-# TODO VSIM :)
-# TODO Questa regressions
-# TODO Questa Makefile speed test (and regression test)
-# TODO Fix what happens if subdir has hdl change.
+# TODO QUESTA - Fix what happens if subdir has hdl change.
+# TODO QUESTA - VSIM :)
+# TODO QUESTA - regressions
+# TODO QUESTA - Makefile speed test (and regression test)
+# TODO QUESTA - Make dependencies more than just '_info'
 
 = COMPLETED
-# DONE Make the clean recursive
-# DONE Make the questa compilation recursive
-# DONE set -e / fix verbosity
-# DONE Test what happens on VCOM/VLOG Error.
+# DONE QUESTA - Remove the LOCAL_COMP funny business / clean up compilation.
+# DONE QUESTA - Fix the questa_block COMPILE_ORDER DECLARATION.
+# DONE QUESTA - Make the clean recursive
+# DONE QUESTA - Make the questa compilation recursive
+# DONE QUESTA - set -e / fix verbosity
+# DONE QUESTA - Test what happens on VCOM/VLOG Error.
