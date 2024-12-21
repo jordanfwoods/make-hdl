@@ -25,7 +25,7 @@ include ../../make/common.mk
 ##########################
 
 # if unspecified, just grab everything in the hdl folder.
-$(BLOCK)_COMPILE_ORDER ?= $(wildcard ../$(BLOCK)/hdl/*)
+$(BLOCK)_COMPILE_ORDER ?=
 # names of libraries this block is dependent on.
 $(BLOCK)_DEPENDENCY    ?=
 # If this is a testbench with testcases, allow for 'vsim'
@@ -45,11 +45,13 @@ $(BLOCK)_VLOG_OPT      ?= -quiet -sv
 # just give a block name.
 # NOTE: currently looks at _info, but that could be changed in the future, TBD.
 $(BLOCK)_DEPS          := $(patsubst %,../%/sim/_info,$($(BLOCK)_DEPENDENCY))
+# Dependent Items to clean. Enables Recursive Cleaning.
+$(BLOCK)_CLEAN_DEPS    := $(patsubst %,clean_%,$($(BLOCK)_DEPENDENCY))
 
 ### Concatenated lists for all BLOCKs (So MAKE can find our hypothetical targets easier) ###
 
 # List of files for full clean
-FULL_CLEAN_LIST        := $(FULL_CLEAN_LIST) ../$(BLOCK)/sim ../$(BLOCK)/work ../$(BLOCK)/modelsim.ini
+CLEAN_TARGETS          := $(CLEAN_TARGETS) clean_$(BLOCK)
 # List of .PHONY comp_objects
 COMP_TARGETS           := $(COMP_TARGETS) comp_$(BLOCK)
 # List of modelsimi.ini's

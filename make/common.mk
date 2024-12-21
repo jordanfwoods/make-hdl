@@ -25,4 +25,9 @@ V =
 VECHO = @echo
 endif
 
-
+# Since we abuse .ONESHELL, it only looks at the first line's '@'
+# Therefore, let's just make a little utility to toggle verbosity
+define echo_command
+	$(VECHO) "$(1)"
+	$(1)
+endef
