@@ -1,11 +1,15 @@
 = TO-DO List
-# TODO QUESTA - Fix what happens if subdir has hdl change.
-# TODO QUESTA - VSIM :)
+# TODO QUESTA - FIX OSVVM ... LOL
+# TODO QUESTA - CLEAN UP VSIM OPTIONS, etc.
+# TODO QUESTA - MIXED HDL LIBRARIES
+# TODO QUESTA - if block.mk has 'include ../lib_<dep>/<dep>.mk', but not '$(BLOCK)_DEPENDENCY := lib_<dep>'
 # TODO QUESTA - regressions
 # TODO QUESTA - Makefile speed test (and regression test)
 # TODO QUESTA - Make dependencies more than just '_info'
 
 = COMPLETED
+# DONE QUESTA - VSIM :)
+# REJECT QUESTA - Fix what happens if subdir has hdl change.
 # DONE QUESTA - Remove the LOCAL_COMP funny business / clean up compilation.
 # DONE QUESTA - Fix the questa_block COMPILE_ORDER DECLARATION.
 # DONE QUESTA - Make the clean recursive

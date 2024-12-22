@@ -42,11 +42,15 @@ module tb();
          a = $random();
          b = $random();
          #2ns;
-         if (c != a&b)
-            $display("You suck at AND-ing. a: %0x, b: %0x, c: %0x",a,b,c);
-         else
-            $display("You ROCK at AND-ing. a: %0x, b: %0x, c: %0x",a,b,c);
-      end
-   end
+         if (c == (a&b))
+            $display("You ROCK at AND-ing. a: %2x, b: %2x, c: %2x, expected: %2x",a,b,c,a&b);
+         else begin
+            $error("You suck at AND-ing. a: %2x, b: %2x, c: %2x, expected: %2x",a,b,c,a&b);
+            $fatal(1, "AND module failed to properly execute bitwise and logic");
+         end // if c==a&b
+      end // for i 0:49
+      $display("Finished the lib_tb_a test. All 50 iterations PASSED!");
+      $finish();
+   end // initial
 endmodule
 

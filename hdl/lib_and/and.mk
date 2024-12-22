@@ -1,7 +1,7 @@
-include ../lib_osvvm/osvvm.mk
+include ../osvvm/osvvm.mk
 
 BLOCK := lib_and
-$(BLOCK)_DEPENDENCY := lib_osvvm
+$(BLOCK)_DEPENDENCY := osvvm
 
 include ../../make/questa_blocks.mk
 

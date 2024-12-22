@@ -45,7 +45,9 @@ all: compile ;
 else
 .PHONY: all sim
 all sim: compile
-	@echo "Hello World from '$@' target!"
+	@set -e
+	echo "~~ Starting Simulating $(BLOCK).$($(BLOCK)_TB_TOP) ~~"
+	$(call echo_command, vsim work.$($(BLOCK)_TB_TOP) $(VSIM_LIB_OPTS) $($(BLOCK)_GUI) -do 'run -all')
 endif
 
 .PHONY: clean
@@ -76,8 +78,11 @@ $(COMP_TARGETS) : comp_% : ../%/sim/_info ;
 # pre-compiled library won't trigger the recipe.
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 $(INI_TARGETS) : ../%/modelsim.ini : $$($$*_DEPS)
-	@cd ../$*
-	$(foreach i, $($*_DEPENDENCY), $(call echo_command, vmap -quiet $i ../$i/sim))
+	@set -e
+	cd ../$*
+	for i in $($*_INI_DEPS); do
+		$(call echo_command, vmap -quiet $$i ../$$i/sim)
+	done
 	cd - > /dev/null
 
 # Do the standard vlib / vmap / vcom for a questa library
@@ -110,3 +115,11 @@ $(CLEAN_TARGETS) : clean_% : $$($$*_CLEAN_DEPS)
 	@echo "~~ Cleaning $*  ~~"
 	$(call echo_command, rm -rf ../$*/sim ../$*/modelsim.ini ../$*/work)
 
+# Alternative for Compiling file by file
+# for i in $($*_COMPILE_ORDER); do
+# 	if [[ $$i == @(*.vhdl|*.vho|*.vhd) ]] ; then
+# 		$(call echo_command, vcom -work $(dir $@) $($*_VCOM_OPT) $$i)
+# 	else
+# 		$(call echo_command, vlog -work $(dir $@) $($*_VLOG_OPT) $$i)
+# 	fi
+# done

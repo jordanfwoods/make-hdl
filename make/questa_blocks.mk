@@ -34,6 +34,7 @@ $(BLOCK)_HAS_TC        ?= no
 $(BLOCK)_VCOM_OPT      ?= -quiet -2008
 # Verilog Compile options
 $(BLOCK)_VLOG_OPT      ?= -quiet -sv
+$(BLOCK)_TB_TOP        ?= tb
 
 ####################
 # UNTOUCHABLE VARS #
@@ -58,5 +59,15 @@ COMP_TARGETS           := $(COMP_TARGETS) comp_$(BLOCK)
 INI_TARGETS            := $(INI_TARGETS) ../$(BLOCK)/modelsim.ini
 # List of questa libraries
 LIB_TARGETS            := $(LIB_TARGETS) ../$(BLOCK)/sim/_info
+# VSIM Libraries
+VSIM_LIB_OPTS          := $(VSIM_LIB_OPTS) -L $(BLOCK)
+# MODELSIM.INI DEPENDENTS
+$(eval $(BLOCK)_INI_DEPS := $($(BLOCK)_DEPENDENCY) $(foreach i, $($(BLOCK)_DEPENDENCY), $($i_DEPENDENCY)))
+
+ifdef GUI
+$(BLOCK)_GUI :=
+else
+$(BLOCK)_GUI := -c
+endif
 
 endif

@@ -25,8 +25,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library lib_osvvm;
-use lib_osvvm.AlertLogPkg.all;
+library osvvm;
+context osvvm.OsvvmContext;
 
 entity and1 is
    generic (
