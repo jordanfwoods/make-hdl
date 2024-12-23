@@ -18,7 +18,7 @@
 # If we have already added it to the COMPILE Targets, then no need to run this again.
 ifeq (,$(findstring comp_$(BLOCK), $(COMP_TARGETS)))
 
-include ../../make/common.mk
+include ../../make/questa/common.mk
 
 ##########################
 # USER OVERWRITABLE VARS #

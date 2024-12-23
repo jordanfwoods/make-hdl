@@ -14,7 +14,7 @@
 ## https://creativecommons.org/licenses/by-nc-nd/4.0/      ##
 #############################################################
 
-include ../../make/common.mk
+include ../../make/questa/common.mk
 
 ##########################
 # USER OVERWRITABLE VARS #
