@@ -22,9 +22,40 @@ include ../../make/common.mk
 
 HAS_TC ?= no
 
-####################
-# UNTOUCHABLE VARS #
-####################
+####################################
+# PRE-DEFINED ROUTINES / FUNCTIONS #
+####################################
+
+define questa_compile
+	if [[ "$(1)" != "" ]]; then
+		if [[ $(firstword $(1)) == @(*.vhdl|*.vho|*.vhd) ]]; then
+			$(call echo_command, vcom -work $(dir $(2)) $($*_VCOM_OPT) $(1))
+		else
+			$(call echo_command, vlog -work $(dir $(2)) $($*_VLOG_OPT) $(1))
+		fi
+	fi
+endef
+
+define questa_mixed_compile
+	IS_VHDL=false
+	if [[ $(firstword $($*_COMPILE_ORDER)) == @(*.vhdl|*.vho|*.vhd) ]] ; then IS_VHDL=true; fi
+	for i in $($*_COMPILE_ORDER); do
+		if $$IS_VHDL && [[ $$i == @(*.vhdl|*.vho|*.vhd) ]] ; then
+			CURR_COMPILE+=" $$i"
+		elif $$IS_VHDL ; then
+			$(call questa_compile, $$CURR_COMPILE, $@, $*)
+			CURR_COMPILE="$$i"
+			IS_VHDL=false
+		elif [[ $$i == @(*.vhdl|*.vho|*.vhd) ]] ; then
+			$(call questa_compile, $$CURR_COMPILE, $@, $*)
+			CURR_COMPILE="$$i"
+			IS_VHDL=true
+		else
+			CURR_COMPILE+=" $$i"
+		fi
+	done
+	$(call questa_compile, $$CURR_COMPILE, $@, $*)
+endef
 
 ######################
 ## GNU MAKE Options ##
@@ -96,11 +127,10 @@ $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_
 	cd ../$*
 	$(call echo_command, vlib -quiet $(dir $@))
 	$(call echo_command, vmap -quiet work $(dir $@))
-	if [[ $$(echo $($*_COMPILE_ORDER) | awk '{print $$1}') == @(*.vhdl|*.vho|*.vhd) ]]
-	then
-		$(call echo_command, vcom -work $(dir $@) $($*_VCOM_OPT) $($*_COMPILE_ORDER))
+	if [[ "$($*_MIXED_HDL)" == "" ]]; then
+		$(call questa_compile, $($*_COMPILE_ORDER), $@, $*)
 	else
-		$(call echo_command, vlog -work $(dir $@) $($*_VLOG_OPT) $($*_COMPILE_ORDER))
+		$(call questa_mixed_compile)
 	fi
 	$(VECHO) "~~ Finishing Compiling $* ~~"
 	cd - > /dev/null
@@ -115,11 +145,17 @@ $(CLEAN_TARGETS) : clean_% : $$($$*_CLEAN_DEPS)
 	@echo "~~ Cleaning $*  ~~"
 	$(call echo_command, rm -rf ../$*/sim ../$*/modelsim.ini ../$*/work)
 
-# Alternative for Compiling file by file
-# for i in $($*_COMPILE_ORDER); do
-# 	if [[ $$i == @(*.vhdl|*.vho|*.vhd) ]] ; then
-# 		$(call echo_command, vcom -work $(dir $@) $($*_VCOM_OPT) $$i)
-# 	else
-# 		$(call echo_command, vlog -work $(dir $@) $($*_VLOG_OPT) $$i)
-# 	fi
-# done
+
+#################################################
+##            ~~~ GRAVEYARD ~~~               ##
+## Helpful, but currently unused code snippets ##
+#################################################
+
+# Alternative for Compiling file by file - The current mixed HDL method is more complicated but uses less vcom/vlog's
+#		for i in $($*_COMPILE_ORDER); do
+#			if [[ $$i == @(*.vhdl|*.vho|*.vhd) ]] ; then
+#				$(call echo_command, vcom -work $(dir $@) $($*_VCOM_OPT) $$i)
+#			else
+#				$(call echo_command, vlog -work $(dir $@) $($*_VLOG_OPT) $$i)
+#			fi
+#		done

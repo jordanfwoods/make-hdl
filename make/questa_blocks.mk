@@ -34,7 +34,10 @@ $(BLOCK)_HAS_TC        ?= no
 $(BLOCK)_VCOM_OPT      ?= -quiet -2008
 # Verilog Compile options
 $(BLOCK)_VLOG_OPT      ?= -quiet -sv
+# Testbench top-level for simulatable libraries
 $(BLOCK)_TB_TOP        ?= tb
+# Library has a mix of VHDL and Verilog.
+$(BLOCK)_MIXED_HDL     ?=
 
 ####################
 # UNTOUCHABLE VARS #
