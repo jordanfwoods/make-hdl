@@ -19,21 +19,52 @@ This framework aims to do the following:
     * Uses `NON-PROJECT MODE` to synthesize each block `OUT OF CONTEXT`, thus allowing us
       to avoid re-synthesizing everything.
     * Implementation cannot be sped up in a `GNU MAKE` style.
+  * Generated HDL registers `(TBD)`
+    * Uses `SystemRDL` files as single source of truth for HDL Registers.
+    * `(TBD)` will be the SystemRDL compiler used.
 
 ## Table of contents
-1. [Framework Philosophy](#philosophy)
-2. [Expected Directory Structure](#directory)
-3. [Example HDL Hierarchy](#hierarchy)
-4. [Necessary Make Variables](#variables)
-5. [Testing the Makefiles](#testing)
+1. [**Framework Philosophy**](#philosophy)
+    a. [**Expected Directory Structure**](#directory)
+2. [**Necessary Make Targets**](#targets)
+3. [**Necessary Make Variables**](#variables)
+4. [**Example HDL Hierarchy**](#hierarchy)
+5. [**Testing the Makefiles**](#testing)
 
 ### Framework Philosophy <a name="philosophy"></a>
 
-### Expected Directory Structure <a name="directory"></a>
+--------  -----------------------
+keyword   text
+--------  -----------------------
+red       Sunsets, apples, and
+          other red or reddish
+          things.
 
-### Example HDL Hierarchy <a name="hierarchy"></a>
+green     Leaves, grass, frogs
+          and other things it's
+          not easy being.
+--------  -----------------------
+
+A horizontal rule follows.
+
+***
+
+Here's a definition list:
+
+apples
+  : Good for making applesauce.
+oranges
+  : Citrus!
+tomatoes
+  : There's no "e" in tomatoe.
+
+#### Expected Directory Structure <a name="directory"></a>
+
+### Necessary Make Targets <a name="targets"></a>
 
 ### Necessary Make Variables <a name="variables"></a>
+
+### Example HDL Hierarchy <a name="hierarchy"></a>
 
 ### Testing the Makefiles <a name="testing"></a>
 

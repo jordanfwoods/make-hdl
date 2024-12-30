@@ -1,7 +1,8 @@
 
 = TO-DO List
-# TODO   QUESTA  - regressions
 # TODO   GENERAL - Top level readme
+# TODO   QUESTA  - Multiple TCs
+# TODO   QUESTA  - regressions
 # TODO   QUESTA  - Makefile speed test (and regression test)
 # TODO   QUESTA  - Make dependencies more than just '_info'
 # TODO   QUESTA  - Fix modelsim.ini target compilation edge cases.
