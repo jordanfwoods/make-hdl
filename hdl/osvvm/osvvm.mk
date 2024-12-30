@@ -2,6 +2,7 @@ BLOCK := osvvm
 $(BLOCK)_COMPILE_ORDER := ../$(BLOCK)/hdl/IfElsePkg.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/OsvvmTypesPkg.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/OsvvmScriptSettingsPkg.vhd
+$(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/OsvvmScriptSettingsPkg_default.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/OsvvmSettingsPkg.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/TextUtilPkg.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/ResolutionPkg.vhd
