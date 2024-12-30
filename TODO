@@ -1,6 +1,5 @@
 
 = TO-DO List
-# TODO   QUESTA - CLEAN UP VSIM OPTIONS, etc.
 # TODO   QUESTA - if block.mk has 'include ../lib_<dep>/<dep>.mk', but not '$(BLOCK)_DEPENDENCY := lib_<dep>'
 # TODO   QUESTA - regressions
 # TODO   QUESTA - Makefile speed test (and regression test)
@@ -8,6 +7,7 @@
 # TODO   QUESTA - Fix modelsim.ini target compilation edge cases.
 
 = COMPLETED
+# DONE   QUESTA - CLEAN UP VSIM OPTIONS, etc.
 # DONE   QUESTA - FIX OSVVM ... LOL
 # DONE   QUESTA - MIXED HDL LIBRARIES
 # DONE   QUESTA - VSIM :)

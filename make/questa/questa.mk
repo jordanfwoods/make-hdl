@@ -34,9 +34,9 @@ HAS_TC ?= no
 define questa_compile
 	if [[ "$(1)" != "" ]]; then
 		if [[ $(firstword $(1)) == @(*.vhdl|*.vho|*.vhd) ]]; then
-			$(call echo_command, vcom -work $(dir $(2)) $($*_VCOM_OPT) $(1))
+			$(call echo_command, vcom -work $(dir $(2)) $($*_VCOM_OPTS) $(1))
 		else
-			$(call echo_command, vlog -work $(dir $(2)) $($*_VLOG_OPT) $(1))
+			$(call echo_command, vlog -work $(dir $(2)) $($*_VLOG_OPTS) $(1))
 		fi
 	fi
 endef
@@ -90,7 +90,7 @@ else
 all sim: compile
 	@set -e
 	echo "~~ Starting Simulating $(BLOCK).$($(BLOCK)_TB_TOP) ~~"
-	$(call echo_command, vsim work.$($(BLOCK)_TB_TOP) $(VSIM_LIB_OPTS) $($(BLOCK)_GUI) -do 'run -all')
+	$(call echo_command, vsim work.$($(BLOCK)_TB_TOP) $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'run -all')
 endif
 
 # Basic clean target for current directory
