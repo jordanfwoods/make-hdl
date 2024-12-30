@@ -14,7 +14,7 @@
 ## https://creativecommons.org/licenses/by-nc-nd/4.0/      ##
 #############################################################
 
-include ../../make/questa/common.mk
+include ../../make/common.mk
 
 ##########################
 # USER OVERWRITABLE VARS #
@@ -26,6 +26,11 @@ HAS_TC ?= no
 # PRE-DEFINED ROUTINES / FUNCTIONS #
 ####################################
 
+## Function: questa_compile
+# Generic function that calls 'vcom' if VHDL file is provided, else 'vlog'
+# Parameters:
+# 1 : HDL File path (or list of HDL Files)
+# 2 : Library target (i.e. ../lib_and/sim/_info, etc)
 define questa_compile
 	if [[ "$(1)" != "" ]]; then
 		if [[ $(firstword $(1)) == @(*.vhdl|*.vho|*.vhd) ]]; then
@@ -36,6 +41,11 @@ define questa_compile
 	fi
 endef
 
+## Function: questa_mixed_compile
+# Highly Specific function that looks at the compile order, and compiles all consecutive
+# VHDL / Verilog Files in one command.
+# It takes no parameters, but assumes that $($(BLOCK)_COMPILE_ORDER) is not empty, and
+# is in a generic recipe (i.e. $@ and $* are non-zero)
 define questa_mixed_compile
 	IS_VHDL=false
 	if [[ $(firstword $($*_COMPILE_ORDER)) == @(*.vhdl|*.vho|*.vhd) ]] ; then IS_VHDL=true; fi
@@ -70,6 +80,8 @@ endef
 # GLOBAL TARGETS #
 ##################
 
+# Define the all target to be 'compile' if there are no testcases,
+# otherwise define a 'sim' target and use that for 'all'.
 ifeq ($(HAS_TC),no)
 .PHONY: all
 all: compile ;
@@ -81,14 +93,16 @@ all sim: compile
 	$(call echo_command, vsim work.$($(BLOCK)_TB_TOP) $(VSIM_LIB_OPTS) $($(BLOCK)_GUI) -do 'run -all')
 endif
 
+# Basic clean target for current directory
 .PHONY: clean
 clean:
 	$Vrm -rf work modelsim.ini sim
 
-# TBD Make actually recursive
+# Recursively look through dependency libraries and clean those libraries
 .PHONY: recursiveclean
 recursiveclean: $(CLEAN_TARGETS) ;
 
+# For the generic 'compile' target, just call the specific comp_ target for our block.
 .PHONY: compile
 compile: comp_$(BLOCK) ;
 
@@ -98,14 +112,13 @@ compile: comp_$(BLOCK) ;
 
 # This will expand to `comp_lib_and`
 # and is the phony target used for compiling a single block.
-# Output products of compilation are:
-# 1. the compiled library in ../lib_block/sim
+# This just hides the messy questa compiled library files.
 .PHONY : comp_%
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 $(COMP_TARGETS) : comp_% : ../%/sim/_info ;
 
 # Pattern for making the modelsim.ini
-# May need a way to force this everytime, since an added
+# TODO May need a way to force this everytime, since an added
 # pre-compiled library won't trigger the recipe.
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 $(INI_TARGETS) : ../%/modelsim.ini : $$($$*_DEPS)
@@ -117,8 +130,8 @@ $(INI_TARGETS) : ../%/modelsim.ini : $$($$*_DEPS)
 	cd - > /dev/null
 
 # Do the standard vlib / vmap / vcom for a questa library
-# and put it a 'sim' folder in the module directory.
-# Requires the modelsim.ini file with appropriate mappings in ../lib_block/modelsim.ini
+# and put it a 'sim' folder in the target block's directory.
+# Requires the modelsim.ini file with appropriate mappings in ../lib_<block>/modelsim.ini
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 .DELETE_ON_ERROR: ../%/sim/_info # Don't keep _info if it barfs
 $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_ORDER)
@@ -138,13 +151,12 @@ $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_
 # This will expand to `clean_lib_and`
 # and is the phony target used for compiling a single block.
 # Removed output products are:
-# 1. the compiled library in ../lib_block/sim
+# 1. the compiled library in ../lib_<block>/{sim,modelsim.ini,work}
 .PHONY : $(CLEAN_TARGETS)
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 $(CLEAN_TARGETS) : clean_% : $$($$*_CLEAN_DEPS)
 	@echo "~~ Cleaning $*  ~~"
 	$(call echo_command, rm -rf ../$*/sim ../$*/modelsim.ini ../$*/work)
-
 
 #################################################
 ##            ~~~ GRAVEYARD ~~~               ##

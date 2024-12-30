@@ -52,5 +52,6 @@ module tb();
       $display("Finished the lib_tb_a test. All 50 iterations PASSED!");
       $finish();
    end // initial
+
 endmodule
 
