@@ -67,6 +67,12 @@ define questa_mixed_compile
 	$(call questa_compile, $$CURR_COMPILE, $@, $*)
 endef
 
+## Define the VSIM command to be called by 'all/sim/simulate' AND 'regression' targets
+define questa_vsim
+mkdir -p results
+vsim work.$(1) -l results/$(1).log -L work $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'onfinish stop; run -all; quit -code [coverage attribute -name TESTSTATUS -concise]'
+endef
+
 ######################
 ## GNU MAKE Options ##
 ######################
@@ -86,11 +92,21 @@ ifeq ($(HAS_TC),no)
 .PHONY: all
 all: compile ;
 else
-.PHONY: all sim
-all sim: compile
+.PHONY: all sim simulate
+all sim simulate: compile
 	@set -e
 	echo "~~ Starting Simulating $(BLOCK).$($(BLOCK)_TB_TOP) ~~"
-	$(call echo_command, vsim work.$($(BLOCK)_TB_TOP) $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'run -all')
+	$(call questa_vsim,$($(BLOCK)_TB_TOP))
+
+REGRESSION_LIST ?=
+.PHONY: regression
+regression: compile
+	@set -e
+	for i in $(REGRESSION_LIST); do
+		echo "~~ Starting Simulating $(BLOCK).$$i ~~"
+		$(call questa_vsim,$$i)
+	done
+
 endif
 
 # Basic clean target for current directory

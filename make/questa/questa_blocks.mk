@@ -36,8 +36,10 @@ $(eval $(BLOCK)_VCOM_OPTS     ?= -quiet -2008)
 $(eval $(BLOCK)_VLOG_OPTS     ?= -quiet -sv)
 # Questa Simulation options
 $(eval $(BLOCK)_VSIM_OPTS     ?=)
+# Testcase to be run
+$(eval TC                     ?= tb)
 # Testbench top-level for simulatable libraries
-$(eval $(BLOCK)_TB_TOP        ?= tb)
+$(eval $(BLOCK)_TB_TOP        ?= $(TC))
 # Library has a mix of VHDL and Verilog.
 $(eval $(BLOCK)_MIXED_HDL     ?=)
 

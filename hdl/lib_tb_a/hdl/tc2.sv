@@ -1,11 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// tb.sv = Testbench for lib_tb_a                                             //
+// tc2.sv = Testbench for lib_tb_a                                            //
 // This module does the following:                                            //
-// 1) Instantiates the and1.vhd and the and2.vhd and                          //
-// 2) Runs an associated testcase with it.                                    //
+// 1) Instantiates the tb.sv                                                  //
+// 2) Initializes the inputs (a & b) to 0.                                    //
+// 3) Asserts an Error and a Fatal, to test the regression.                   //
 //                                                                            //
 // Manual Revision History                                                    //
-// 12/13/24 - JFW - Initial Release                                           //
+// 12/30/24 - JFW - Initial Release                                           //
 ////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////
@@ -16,26 +17,32 @@
 
 `timescale 1ps / 1ps
 
-module tb();
+module tc2();
+
    ////////////////
    // Parameters //
    ////////////////
-   localparam bitwidth = 8;
 
    ////////////////////////
    // Signal Definitions //
    ////////////////////////
-   logic [bitwidth-1:0] a, b, c;
 
    //////////////////////////////
    // Component Instantiations //
    //////////////////////////////
 
-   and1 #(.G_WIDTH (bitwidth)) and1_inst(.a (a), .b (b), .c (c));
+   tb #() tb();
 
-   ///////////////////////////////
-   // Initial / Clocking Blocks //
-   ///////////////////////////////
+   ///////////////////
+   // Initial Block //
+   ///////////////////
+
+   initial begin
+      tb.a = 0;
+      tb.b = 0;
+      #1ns;
+      $error("You suck at AND-ing. a: %2x, b: %2x, c: %2x, expected: %2x",tb.a,tb.b,tb.c,tb.a&tb.b);
+   end // initial
 
 endmodule
 

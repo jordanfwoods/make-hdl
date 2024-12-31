@@ -1,13 +1,15 @@
 
 = TO-DO List
-# TODO   GENERAL - Top level readme
-# TODO   QUESTA  - Multiple TCs
-# TODO   QUESTA  - regressions
+# DONE   QUESTA  - regressions - Compiling results and rejecting empty REGRESSION_LISTS
+# TODO   GENERAL - Licensing
 # TODO   QUESTA  - Makefile speed test (and regression test)
 # TODO   QUESTA  - Make dependencies more than just '_info'
 # TODO   QUESTA  - Fix modelsim.ini target compilation edge cases.
 
 = COMPLETED
+# DONE   QUESTA  - regressions - running all TCs.
+# DONE   QUESTA  - Multiple TCs
+# DONE   GENERAL - Start of Top level readme
 # REJECT QUESTA  - if block.mk has 'include ../lib_<dep>/<dep>.mk', but not '$(BLOCK)_DEPENDENCY := lib_<dep>'
 # DONE   QUESTA  - CLEAN UP VSIM OPTIONS, etc.
 # DONE   QUESTA  - FIX OSVVM ... LOL
