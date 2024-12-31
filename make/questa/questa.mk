@@ -2,7 +2,7 @@
 ## questa.mk = Phony Make Rules for HDL Blocks in questasim                   ##
 ## This module does the following:                                            ##
 ## 1) Sets the following questasim make rules:                                ##
-##    all, compile, sim, clean, recursiveclean                                ##
+##    all, compile, sim, clean, recursiveclean, regression, comp_<lib>, etc.  ##
 ##                                                                            ##
 ## Manual Revision History                                                    ##
 ## 12/12/24 - JFW - Initial Release                                           ##
@@ -70,7 +70,7 @@ endef
 ## Define the VSIM command to be called by 'all/sim/simulate' AND 'regression' targets
 define questa_vsim
 mkdir -p results
-vsim work.$(1) -l results/$(1).log -L work $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'onfinish stop; run -all; quit -code [coverage attribute -name TESTSTATUS -concise]'
+vsim work.$(1) -l results/$(1).log -L work $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'onfinish stop; run -all; simstats; quit -code [coverage attribute -name TESTSTATUS -concise]'
 endef
 
 ######################
@@ -86,26 +86,56 @@ endef
 # GLOBAL TARGETS #
 ##################
 
-# Define the all target to be 'compile' if there are no testcases,
-# otherwise define a 'sim' target and use that for 'all'.
 ifeq ($(HAS_TC),no)
+# Define the all target to be 'compile' if there are no testcases,
 .PHONY: all
 all: compile ;
+
 else
+# otherwise define a 'sim' target and use that for 'all'.
 .PHONY: all sim simulate
 all sim simulate: compile
 	@set -e
 	echo "~~ Starting Simulating $(BLOCK).$($(BLOCK)_TB_TOP) ~~"
 	$(call questa_vsim,$($(BLOCK)_TB_TOP))
 
-REGRESSION_LIST ?=
+# regression just compiles the results of the regression.
 .PHONY: regression
-regression: compile
-	@set -e
+regression: run_regression_list
+	@echo -e "\n~~ Regression Results ~~"
+	result="#Library #Testcase Name #Errors #Warnings #\n"
+	result+="#------- #------------- #------ #-------- #\n"
 	for i in $(REGRESSION_LIST); do
+		tmp=`tail -n 1 results/$$i.log | grep "# Errors: "`
+		errors=`echo $$tmp | sed 's@# Errors: \([0-9]\+\).*@\1@'`
+		warn=`echo  $$tmp | sed 's@# Errors: .*, Warnings: \([0-9]\+\).*@\1@'`
+		((error_cnt+=errors))
+		((warn_cnt+=warn))
+		result+="#$(BLOCK) #$$i #$$errors #$$warn #\n"
+	done
+	result+="#------- #------------- #------ #-------- #\n"
+	echo -e $$result | column -t -s '#' -o '| '
+	echo "REGRESSION RESULTS: `echo $(REGRESSION_LIST) | wc -w` tests run with $$error_cnt errors and $$warn_cnt warnings found!"
+	if [ $$error_cnt -eq 0 ] ; then
+		echo -e "REGRESSION PASSED!\n~~ End of Regression Results! ~~\n"
+	else
+		echo -e "REGRESSION FAILED!\n~~ End of Regression Results! ~~\n"
+		exit 1;
+	fi
+
+REGRESSION_LIST ?=
+# run_regression_list loops through each tc in the regression list, and runs them.
+.PHONY: run_regression_list
+run_regression_list: compile
+ifeq (,$(REGRESSION_LIST))
+	$(error REGRESSION LIST IS EMPTY!)
+else
+	@for i in $(REGRESSION_LIST); do
 		echo "~~ Starting Simulating $(BLOCK).$$i ~~"
 		$(call questa_vsim,$$i)
 	done
+	: # Ensure this recipe doesn't end on an error
+endif
 
 endif
 
@@ -173,17 +203,3 @@ $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_
 $(CLEAN_TARGETS) : clean_% : $$($$*_CLEAN_DEPS)
 	@echo "~~ Cleaning $*  ~~"
 	$(call echo_command, rm -rf ../$*/sim ../$*/modelsim.ini ../$*/work)
-
-#################################################
-##            ~~~ GRAVEYARD ~~~               ##
-## Helpful, but currently unused code snippets ##
-#################################################
-
-# Alternative for Compiling file by file - The current mixed HDL method is more complicated but uses less vcom/vlog's
-#		for i in $($*_COMPILE_ORDER); do
-#			if [[ $$i == @(*.vhdl|*.vho|*.vhd) ]] ; then
-#				$(call echo_command, vcom -work $(dir $@) $($*_VCOM_OPT) $$i)
-#			else
-#				$(call echo_command, vlog -work $(dir $@) $($*_VLOG_OPT) $$i)
-#			fi
-#		done

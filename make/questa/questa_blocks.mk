@@ -31,11 +31,11 @@ $(eval $(BLOCK)_DEPENDENCY    ?=)
 # If this is a testbench with testcases, allow for 'vsim'
 $(eval $(BLOCK)_HAS_TC        ?= no)
 # VHDL Compile options
-$(eval $(BLOCK)_VCOM_OPTS     ?= -quiet -2008)
+$(eval $(BLOCK)_VCOM_OPTS     ?= -quiet -pedanticerrors -2008)
 # Verilog Compile options
-$(eval $(BLOCK)_VLOG_OPTS     ?= -quiet -sv)
+$(eval $(BLOCK)_VLOG_OPTS     ?= -quiet -pedanticerrors -sv)
 # Questa Simulation options
-$(eval $(BLOCK)_VSIM_OPTS     ?=)
+$(eval $(BLOCK)_VSIM_OPTS     ?= -pedanticerrors)
 # Testcase to be run
 $(eval TC                     ?= tb)
 # Testbench top-level for simulatable libraries
