@@ -3,7 +3,7 @@ Make-HDL
 
 ## License
 
-This is not freely licensed for commercial use.
+This is not freely licensed for commercial use. If you have a need to use this in a commercial capacity, feel free to contact me via the email in my [github profile](https://github.com/jordanfwoods).
 
 [make-hdl](https://github.com/jordanfwoods/make-hdl) © 2025 by [Jordan Woods](https://github.com/jordanfwoods) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1).
 <img style="float:right;height:22px" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="">
