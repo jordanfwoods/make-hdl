@@ -41,8 +41,8 @@ endef
 
 define setup_regression
 	@echo -e "\n~~ Regression Results ~~"
-	result="#Library #Testcase Name #Errors #Warnings #\n"
-	result+="#------- #------------- #------ #-------- #\n"
+	result="Library #Testcase Name #Errors #Warnings\n"
+	result+="--------#--------------#-------#---------\n"
 endef
 
 define compile_regression
@@ -52,14 +52,15 @@ define compile_regression
 		warn=`echo  $$tmp | sed 's@# Errors: .*, Warnings: \([0-9]\+\).*@\1@'`
 		((error_cnt+=errors))
 		((warn_cnt+=warn))
-		result+="#$(1) #$$j #$$errors #$$warn #\n"
+		result+="$(1) #$$j #$$errors #$$warn\n"
 	done
 endef
 
 define finish_regression
-	result+="#------- #------------- #------ #-------- #\n"
+	result+="--------#--------------#-------#---------\n"
+	result+="`echo $(1) | wc -w` Libs #`echo $(2) | wc -w` Tests #$$error_cnt#$$warn_cnt\n"
 	echo -e $$result | column -t -s '#' -o '| '
-	echo "REGRESSION RESULTS: `echo $(REGRESSION_LIST) | wc -w` tests run with $$error_cnt errors and $$warn_cnt warnings found!"
+	echo "REGRESSION RESULTS: `echo $(2) | wc -w` tests run with $$error_cnt errors and $$warn_cnt warnings found!"
 	if [ $$error_cnt -eq 0 ] ; then
 		echo -e "REGRESSION PASSED!\n~~ End of Regression Results! ~~\n"
 	else

@@ -21,8 +21,9 @@ all: regression ;
 # The regression target just compiles the results, it's dependency actually runs the sims
 regression: run_regressions
 	@$(call setup_regression)
-	$(foreach i, $(REGRESSION_LIBS), $(call compile_regression, $i, hdl/$(strip $i)/results, $($i_REGRESSION_LIST)) ; )
-	$(call finish_regression)
+	$(foreach i, $(REGRESSION_LIBS), $(call compile_regression,$i,hdl/$(strip $i)/results,$($i_REGRESSION_LIST)) ; )
+	$(foreach i, $(REGRESSION_LIBS), $(eval TMP_LIST+=$($i_REGRESSION_LIST)))
+	$(call finish_regression,$(REGRESSION_LIBS),$(TMP_LIST))
 
 # The run_regressions target loops through each library in the regression, and runs their regression targets.
 # NOTE: This is one of, if not the only time recursive make is used!

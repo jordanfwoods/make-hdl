@@ -103,8 +103,8 @@ all sim simulate: compile
 .PHONY: regression
 regression: run_regression_list
 	@$(call setup_regression)
-	$(call compile_regression, $(BLOCK), results, $($(BLOCK)_REGRESSION_LIST))
-	$(call finish_regression)
+	$(call compile_regression,$(BLOCK),results,$($(BLOCK)_REGRESSION_LIST))
+	$(call finish_regression,$(BLOCK),$($(BLOCK)_REGRESSION_LIST))
 
 $(BLOCK)_REGRESSION_LIST ?=
 # run_regression_list loops through each tc in the regression list, and runs them.
