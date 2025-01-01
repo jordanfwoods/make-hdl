@@ -70,7 +70,7 @@ endef
 ## Define the VSIM command to be called by 'all/sim/simulate' AND 'regression' targets
 define questa_vsim
 mkdir -p results
-vsim work.$(1) -l results/$(1).log -L work $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'onfinish stop; run -all; simstats; quit -code [coverage attribute -name TESTSTATUS -concise]'
+vsim work.$(1) -l results/$(1).log -L work $(VSIM_LIB_OPTS) $($(BLOCK)_VSIM_OPTS) $($(BLOCK)_GUI) -do 'run -all; quit -code [coverage attribute -name TESTSTATUS -concise]'
 endef
 
 ######################
@@ -102,35 +102,18 @@ all sim simulate: compile
 # regression just compiles the results of the regression.
 .PHONY: regression
 regression: run_regression_list
-	@echo -e "\n~~ Regression Results ~~"
-	result="#Library #Testcase Name #Errors #Warnings #\n"
-	result+="#------- #------------- #------ #-------- #\n"
-	for i in $(REGRESSION_LIST); do
-		tmp=`tail -n 1 results/$$i.log | grep "# Errors: "`
-		errors=`echo $$tmp | sed 's@# Errors: \([0-9]\+\).*@\1@'`
-		warn=`echo  $$tmp | sed 's@# Errors: .*, Warnings: \([0-9]\+\).*@\1@'`
-		((error_cnt+=errors))
-		((warn_cnt+=warn))
-		result+="#$(BLOCK) #$$i #$$errors #$$warn #\n"
-	done
-	result+="#------- #------------- #------ #-------- #\n"
-	echo -e $$result | column -t -s '#' -o '| '
-	echo "REGRESSION RESULTS: `echo $(REGRESSION_LIST) | wc -w` tests run with $$error_cnt errors and $$warn_cnt warnings found!"
-	if [ $$error_cnt -eq 0 ] ; then
-		echo -e "REGRESSION PASSED!\n~~ End of Regression Results! ~~\n"
-	else
-		echo -e "REGRESSION FAILED!\n~~ End of Regression Results! ~~\n"
-		exit 1;
-	fi
+	@$(call setup_regression)
+	$(call compile_regression, $(BLOCK), results, $($(BLOCK)_REGRESSION_LIST))
+	$(call finish_regression)
 
-REGRESSION_LIST ?=
+$(BLOCK)_REGRESSION_LIST ?=
 # run_regression_list loops through each tc in the regression list, and runs them.
 .PHONY: run_regression_list
 run_regression_list: compile
-ifeq (,$(REGRESSION_LIST))
+ifeq (,$($(BLOCK)_REGRESSION_LIST))
 	$(error REGRESSION LIST IS EMPTY!)
 else
-	@for i in $(REGRESSION_LIST); do
+	@for i in $($(BLOCK)_REGRESSION_LIST); do
 		echo "~~ Starting Simulating $(BLOCK).$$i ~~"
 		$(call questa_vsim,$$i)
 	done

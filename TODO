@@ -5,13 +5,14 @@
 ########################################################################
 
 = TO-DO List
-# TODO   GENERAL - Top level Makefile
+# TODO   GENERAL - Makefile Time reporting
 # TODO   QUESTA  - Makefile speed test (and regression test)
 # TODO   QUESTA  - Make dependencies more than just '_info'
 # TODO   QUESTA  - Fix modelsim.ini target compilation edge cases.
 # TODO   VIVADO  - Start synth.
 
 = COMPLETED
+# DONE   GENERAL - Top level Makefile
 # DONE   GENERAL - Licensing
 # DONE   QUESTA  - regressions - Compiling results and rejecting empty REGRESSION_LISTS
 # DONE   QUESTA  - regressions - running all TCs.

@@ -31,3 +31,40 @@ define echo_command
 	$(VECHO) "$(1)"
 	$(1)
 endef
+
+######################
+## REGRESSION STUFF ##
+######################
+
+# These routines are needed by the top-level Makefile, AND each HDL library that has
+# testcases, so the functions are here for now.
+
+define setup_regression
+	@echo -e "\n~~ Regression Results ~~"
+	result="#Library #Testcase Name #Errors #Warnings #\n"
+	result+="#------- #------------- #------ #-------- #\n"
+endef
+
+define compile_regression
+	for j in $(3); do
+		tmp=`tail -n 1 $(2)/$$j.log | grep "# Errors: "`
+		errors=`echo $$tmp | sed 's@# Errors: \([0-9]\+\).*@\1@'`
+		warn=`echo  $$tmp | sed 's@# Errors: .*, Warnings: \([0-9]\+\).*@\1@'`
+		((error_cnt+=errors))
+		((warn_cnt+=warn))
+		result+="#$(1) #$$j #$$errors #$$warn #\n"
+	done
+endef
+
+define finish_regression
+	result+="#------- #------------- #------ #-------- #\n"
+	echo -e $$result | column -t -s '#' -o '| '
+	echo "REGRESSION RESULTS: `echo $(REGRESSION_LIST) | wc -w` tests run with $$error_cnt errors and $$warn_cnt warnings found!"
+	if [ $$error_cnt -eq 0 ] ; then
+		echo -e "REGRESSION PASSED!\n~~ End of Regression Results! ~~\n"
+	else
+		echo -e "REGRESSION FAILED!\n~~ End of Regression Results! ~~\n"
+		exit 1;
+	fi
+endef
+

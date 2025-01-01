@@ -3,8 +3,5 @@
 ## To view a copy of this license, visit                              ##
 ## https://creativecommons.org/licenses/by-nc-sa/4.0/                 ##
 ########################################################################
-HAS_TC          = yes
-TC              = tc1
-include ../lib_tb_a/tb_a.mk
-include regression_list.mk
-include ../../make/questa/questa.mk
+lib_tb_a_REGRESSION_LIST := tc1 tc2 long_name
+
