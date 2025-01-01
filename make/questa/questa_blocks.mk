@@ -9,11 +9,11 @@
 ## 12/11/24 - JFW - Initial Release                                           ##
 ################################################################################
 ##
-#############################################################
-## HDL Buildfiles © 2025 by Jordan Woods is licensed under ##
-## CC BY-NC-ND 4.0. To view a copy of this license, visit  ##
-## https://creativecommons.org/licenses/by-nc-nd/4.0/      ##
-#############################################################
+########################################################################
+## make-hdl © 2025 by Jordan Woods is licensed under CC BY-NC-SA 4.0. ##
+## To view a copy of this license, visit                              ##
+## https://creativecommons.org/licenses/by-nc-sa/4.0/                 ##
+########################################################################
 
 # If we have already added it to the COMPILE Targets, then no need to run this again.
 ifeq (,$(findstring comp_$(BLOCK), $(COMP_TARGETS)))

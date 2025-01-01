@@ -1,6 +1,18 @@
 Make-HDL
 ========
 
+## License
+
+This is not freely licensed for commercial use.
+
+[make-hdl](https://github.com/jordanfwoods/make-hdl) © 2025 by [Jordan Woods](https://github.com/jordanfwoods) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1).
+<img style="float:right;height:22px" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="">
+<img style="float:right;height:22px" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="">
+<img style="float:right;height:22px" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="">
+<img style="float:right;height:22px" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="">
+
+## Overview
+
 I got tired of VHDL / Verilog projects not compiling efficiently,
 so I made a Makefile framework (with a tiny example design)
 to show an example of efficient compilation.

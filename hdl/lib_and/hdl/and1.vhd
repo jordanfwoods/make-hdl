@@ -10,7 +10,9 @@
 --          at - Sat, 07 Dec 2024
 --
 --------------------------------------------------------------------------------
--- No Copyright (c) :)
+-- make-hdl © 2025 by Jordan Woods is licensed under CC BY-NC-SA 4.0. --
+-- To view a copy of this license, visit                              --
+-- https://creativecommons.org/licenses/by-nc-sa/4.0/                 --
 --------------------------------------------------------------------------------
 -- Purpose      : Simple and module to prove out the makefiles.
 --

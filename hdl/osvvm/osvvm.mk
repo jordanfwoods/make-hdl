@@ -1,3 +1,8 @@
+#############################################################
+## HDL Buildfiles © 2025 by Jordan Woods is licensed under ##
+## CC BY-NC-ND 4.0. To view a copy of this license, visit  ##
+## https://creativecommons.org/licenses/by-nc-nd/4.0/      ##
+#############################################################
 BLOCK := osvvm
 $(BLOCK)_COMPILE_ORDER := ../$(BLOCK)/hdl/IfElsePkg.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/OsvvmTypesPkg.vhd
