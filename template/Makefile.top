@@ -5,7 +5,7 @@
 ########################################################################
 
 # necessary inclusions
-include make/common.mk
+include make-hdl/common.mk
 include hdl/lib_tb_a/regression_list.mk
 
 # necessary make options
