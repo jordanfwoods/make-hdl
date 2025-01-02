@@ -111,13 +111,13 @@ $(BLOCK)_DEPENDENCY := osvvm
 $(BLOCK)_COMPILE_ORDER := ../$(BLOCK)/hdl/and1.vhd
 $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/and2.vhd
 
-include ../../make/questa/questa_blocks.mk
+include ../../make-hdl/questa/questa_blocks.mk
 ```
 
 `Makefile`  :
 ```make
 include ../lib_and/and.mk
-include ../../make/questa/questa.mk
+include ../../make-hdl/questa/questa.mk
 ```
 ## 2. Necessary Make Targets <a name="targets"></a>
 

@@ -14,7 +14,7 @@
 ## https://creativecommons.org/licenses/by-nc-sa/4.0/                 ##
 ########################################################################
 
-include ../../make/common.mk
+include ../../make-hdl/common.mk
 
 ##########################
 # USER OVERWRITABLE VARS #

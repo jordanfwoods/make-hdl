@@ -7,4 +7,4 @@ HAS_TC          = yes
 TC              = tc_default
 include ../library/library.mk
 include regression_list.mk
-include ../../make/questa/questa.mk
+include ../../make-hdl/questa/questa.mk

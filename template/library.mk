@@ -18,5 +18,5 @@ $(BLOCK)_COMPILE_ORDER += ../$(BLOCK)/hdl/filen.vhdl
 
 $(BLOCK)_MIXED_HDL := yes
 
-include ../../make/questa/questa_blocks.mk
+include ../../make-hdl/questa/questa_blocks.mk
 
