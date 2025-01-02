@@ -32,6 +32,49 @@ define echo_command
 	$(1)
 endef
 
+############################
+## Performance Monitoring ##
+############################
+
+REPORT_TIME ?=
+ifeq ($(REPORT_TIME),)
+define end_time
+endef
+else
+define end_time
+	$(if $(filter $@, $(_LAST_TARGET_)), $(call end_time_calc))
+endef
+endif
+
+define end_time_calc
+	$(eval __END_TIME__  := $(shell date +%s.%3N))
+	$(eval _L_  := $(shell echo $(__END_TIME__)-$(__START_TIME__)|bc))
+	$(eval _L0_ := $(shell echo 0$(_L_) | sed 's/\..*//'))
+	echo "~~ Time Statistics ~~"
+	echo "Finished targets : $(_ALL_GOALS_)"
+	if   [ "$(_L0_)" -ge "86400" ] ; then
+		echo "Time Elapsed     : $(shell echo $(_L_)/60/60/24 | bc) days $(shell echo $(_L_)/60/60%24 | bc) hours $(shell echo $(_L_)/60%60 | bc) minutes, $(shell echo $(_L_)%60 | bc | awk '{printf "%.4f\n",$$0}') seconds"
+	elif [ "$(_L0_)" -ge "3600" ] ; then
+		echo "Time Elapsed     : $(shell echo $(_L_)/60/60%24 | bc) hours $(shell echo $(_L_)/60%60 | bc) minutes, $(shell echo $(_L_)%60 | bc | awk '{printf "%.4f\n",$$0}') seconds"
+	elif [ "$(_L0_)" -ge "60" ] ; then
+		echo "Time Elapsed     : $(shell echo $(_L_)/60%60 | bc) minutes, $(shell echo $(_L_)%60 | bc | awk '{printf "%.4f\n",$$0}') seconds"
+	else
+		echo "Time Elapsed     : $(shell echo $(_L_)%60 | bc | awk '{printf "%.4f\n",$$0}') seconds"
+	fi
+	echo "~~ End of Time Statistics ~~"
+	echo
+endef
+
+$(eval __START_TIME__ :=$(shell date +%s.%3N))
+
+ifeq (,$(MAKECMDGOALS))
+$(eval _LAST_TARGET_  := all)
+$(eval _ALL_GOALS_    := all)
+else
+$(eval _LAST_TARGET_  := $(lastword $(MAKECMDGOALS)))
+$(eval _ALL_GOALS_    := $(MAKECMDGOALS))
+endif
+
 ######################
 ## REGRESSION STUFF ##
 ######################
@@ -63,8 +106,10 @@ define finish_regression
 	echo "REGRESSION RESULTS: `echo $(2) | wc -w` tests run with $$error_cnt errors and $$warn_cnt warnings found!"
 	if [ $$error_cnt -eq 0 ] ; then
 		echo -e "REGRESSION PASSED!\n~~ End of Regression Results! ~~\n"
+		$(call end_time)
 	else
 		echo -e "REGRESSION FAILED!\n~~ End of Regression Results! ~~\n"
+		$(call end_time)
 		exit 1;
 	fi
 endef

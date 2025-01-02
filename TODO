@@ -5,13 +5,17 @@
 ########################################################################
 
 = TO-DO List
-# TODO   GENERAL - Makefile Time reporting
 # TODO   QUESTA  - Makefile speed test (and regression test)
 # TODO   QUESTA  - Make dependencies more than just '_info'
 # TODO   QUESTA  - Fix modelsim.ini target compilation edge cases.
 # TODO   VIVADO  - Start synth.
+# TODO   GENERAL - Split the make templates from the example design.
+
+== Low Priority List
+# TODO   QUESTA  - VOPT
 
 = COMPLETED
+# DONE   GENERAL - Makefile Time reporting
 # DONE   GENERAL - Top level Makefile
 # DONE   GENERAL - Licensing
 # DONE   QUESTA  - regressions - Compiling results and rejecting empty REGRESSION_LISTS

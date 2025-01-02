@@ -89,7 +89,8 @@ endef
 ifeq ($(HAS_TC),no)
 # Define the all target to be 'compile' if there are no testcases,
 .PHONY: all
-all: compile ;
+all: compile
+	@$(call end_time)
 
 else
 # otherwise define a 'sim' target and use that for 'all'.
@@ -98,6 +99,7 @@ all sim simulate: compile
 	@set -e
 	echo "~~ Starting Simulating $(BLOCK).$($(BLOCK)_TB_TOP) ~~"
 	$(call questa_vsim,$($(BLOCK)_TB_TOP))
+	$(call end_time)
 
 # regression just compiles the results of the regression.
 .PHONY: regression
@@ -117,6 +119,7 @@ else
 		echo "~~ Starting Simulating $(BLOCK).$$i ~~"
 		$(call questa_vsim,$$i)
 	done
+	$(call end_time)
 	: # Ensure this recipe doesn't end on an error
 endif
 
@@ -126,14 +129,17 @@ endif
 .PHONY: clean
 clean:
 	$Vrm -rf work modelsim.ini sim
+	$(call end_time)
 
 # Recursively look through dependency libraries and clean those libraries
 .PHONY: recursiveclean
-recursiveclean: $(CLEAN_TARGETS) ;
+recursiveclean: $(CLEAN_TARGETS)
+	@$(call end_time)
 
 # For the generic 'compile' target, just call the specific comp_ target for our block.
 .PHONY: compile
-compile: comp_$(BLOCK) ;
+compile: comp_$(BLOCK)
+	@$(call end_time)
 
 ########################
 # BLOCK Pattern Rules ##
@@ -144,7 +150,8 @@ compile: comp_$(BLOCK) ;
 # This just hides the messy questa compiled library files.
 .PHONY : comp_%
 .SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
-$(COMP_TARGETS) : comp_% : ../%/sim/_info ;
+$(COMP_TARGETS) : comp_% : ../%/sim/_info
+	@$(call end_time)
 
 # Pattern for making the modelsim.ini
 # TODO May need a way to force this everytime, since an added
@@ -157,6 +164,7 @@ $(INI_TARGETS) : ../%/modelsim.ini : $$($$*_DEPS)
 		$(call echo_command, vmap -quiet $$i ../$$i/sim)
 	done
 	cd - > /dev/null
+	$(call end_time)
 
 # Do the standard vlib / vmap / vcom for a questa library
 # and put it a 'sim' folder in the target block's directory.
@@ -176,6 +184,7 @@ $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_
 	fi
 	$(VECHO) "~~ Finishing Compiling $* ~~"
 	cd - > /dev/null
+	$(call end_time)
 
 # This will expand to `clean_lib_and`
 # and is the phony target used for compiling a single block.
@@ -186,3 +195,4 @@ $(LIB_TARGETS) : ../%/sim/_info : ../%/modelsim.ini $$($$*_DEPS) $$($$*_COMPILE_
 $(CLEAN_TARGETS) : clean_% : $$($$*_CLEAN_DEPS)
 	@echo "~~ Cleaning $*  ~~"
 	$(call echo_command, rm -rf ../$*/sim ../$*/modelsim.ini ../$*/work)
+	$(call end_time)
