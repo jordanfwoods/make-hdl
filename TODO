@@ -5,7 +5,6 @@
 ########################################################################
 
 = TO-DO List
-# TODO   QUESTA  - Make dependencies more than just '_info'
 # TODO   QUESTA  - Fix modelsim.ini target compilation edge cases.
 # TODO   VIVADO  - install vivado.
 # TODO   VIVADO  - research non-project mode tcl scripting.
@@ -14,6 +13,7 @@
 # TODO   QUESTA  - VOPT
 
 = COMPLETED
+# DONE   QUESTA  - Make dependencies more than just '_info'
 # DONE   QUESTA  - Makefile speed test (and regression test)
 # DONE   GENERAL - Split the make templates from the example design.
 # DONE   GENERAL - Makefile Time reporting
