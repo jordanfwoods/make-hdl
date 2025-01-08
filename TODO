@@ -5,7 +5,7 @@
 ########################################################################
 
 = TO-DO List
-# TODO    VIVADO  - make xci tcl script configure the right device/board/family
+# TODO    VIVADO  - add ability for tcl script to handle args and create 'make update_ip'
 # TODO    VIVADO  - Export project mode script.
 # TODO    VIVADO  - Research non-project mode scripts.
 # TODO    QUESTA  - change compile list to a `find . -iname ...` command.
@@ -15,6 +15,7 @@
 # TODO    QUESTA  - VOPT.
 
 = COMPLETED
+# DONE    VIVADO  - make xci tcl script configure the right device/board/family
 # DONE    VIVADO  - Make a `lib_core`, or similar.
 # DONE    VIVADO  - Super basic constraints file.
 # DONE    VIVADO  - Create TCL scripts in lieu of both the BD and XCIs.

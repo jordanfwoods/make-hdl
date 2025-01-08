@@ -149,7 +149,6 @@ compile: comp_$(BLOCK)
 # and is the phony target used for compiling a single block.
 # This just hides the messy questa compiled library files.
 .PHONY : comp_%
-.SECONDEXPANSION : # Allow for funny business like double $ in the dependency list
 $(COMP_TARGETS) : comp_% : ../%/sim/_info
 	@$(call end_time)
 
