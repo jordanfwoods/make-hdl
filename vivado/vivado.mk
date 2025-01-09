@@ -71,14 +71,10 @@ new_ip: | logs
 	TCLFILE=$$TCL.tcl
 	#Assemble amazing TCL script
 	echo "~~ Creating $$TCLFILE ~~"
-	echo "if { [file isdirectory ./"$$TCL"] } {" > $$TCLFILE
-	echo "   read_ip ./$$TCL/$$TCL.xci" >> $$TCLFILE
-	echo "} else {" >> $$TCLFILE
-	echo "   create_project -in_memory -part xc7a12ticsg325-1L" >> $$TCLFILE
-	if [ "`$(__first__)`" ] ; then sed -n  "`$(__first__)`,`$(__last__)`p" logs/vivado.jou | sed 's/^/   /'>> $$TCLFILE ; fi
-	echo "   synth_ip [get_ips]" >> $$TCLFILE
-	echo "   close_project" >> $$TCLFILE
-	echo "}" >> $$TCLFILE
+	echo "create_project -in_memory -part xc7a12ticsg325-1L" > $$TCLFILE
+	if [ "`$(__first__)`" ] ; then sed -n  "`$(__first__)`,`$(__last__)`p" logs/vivado.jou >> $$TCLFILE ; fi
+	echo "if { [string compare [lindex $$argv 0] \"nosynth\"] != 0 } { synth_ip [get_ips] }" >> $$TCLFILE
+	echo "close_project" >> $$TCLFILE
 	# Fix the directories
 	sed -i "s#$$(dirname $$PWD)#.#" $$TCLFILE
 
