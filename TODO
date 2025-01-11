@@ -5,9 +5,8 @@
 ########################################################################
 
 = TO-DO List
-# TODO    VIVADO  - add ability for tcl script to handle args and create 'make update_ip'
+# TODO    VIVADO  - Synthesize modules OOC.
 # TODO    VIVADO  - Export project mode script.
-# TODO    VIVADO  - Research non-project mode scripts.
 # TODO    QUESTA  - change compile list to a `find . -iname ...` command.
 # TODO    VIVADO  - research non-project mode tcl scripting.
 
@@ -15,6 +14,8 @@
 # TODO    QUESTA  - VOPT.
 
 = COMPLETED
+# DONE    VIVADO  - Research non-project mode scripts.
+# REJECT  VIVADO  - 'make update_ip'. REASON: Too many manual steps needed to automate the update.
 # DONE    VIVADO  - make xci tcl script configure the right device/board/family
 # DONE    VIVADO  - Make a `lib_core`, or similar.
 # DONE    VIVADO  - Super basic constraints file.
